@@ -1,0 +1,14 @@
+---
+# tasks file for update-firewall-rules
+- name: "Openinig firewalld ports "
+  firewalld:
+    zone: "{{ item.zone }}"
+    port: "{{ item.port }}/{{ item.protocol }}"
+    permanent: yes
+    state: enabled
+  with_items: "{{ firewall }}"
+  notify:
+    - restart firewalld
+    - restart ssh
+    - restart dhcpv6-client
+

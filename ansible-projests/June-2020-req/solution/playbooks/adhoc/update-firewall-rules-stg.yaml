@@ -1,0 +1,72 @@
+- name: Updating firewall rules in stg environment
+  hosts: stg
+  roles:
+    - role: update-firewall-rules-ftp
+      firewall:
+        - { port: 22, protocol: tcp, zone: drop }
+        - { port: 86, protocol: tcp, zone: drop }
+        - { port: 1971, protocol: tcp, zone: drop }
+        - { port: 2700, protocol: tcp, zone: drop }
+        - { port: 4075, protocol: tcp, zone: drop }
+        - { port: 5021, protocol: tcp, zone: drop }
+        - { port: 5022, protocol: tcp, zone: drop }
+        - { port: 5023, protocol: tcp, zone: drop }
+        - { port: 5024, protocol: tcp, zone: drop }
+        - { port: 5025, protocol: tcp, zone: drop }
+        - { port: 5026, protocol: tcp, zone: drop }
+        - { port: 5080, protocol: tcp, zone: drop }
+        - { port: 9001, protocol: tcp, zone: drop }
+        - { port: 9002, protocol: tcp, zone: drop }
+        - { port: 9003, protocol: tcp, zone: drop }
+        - { port: 9004, protocol: tcp, zone: drop }
+        - { port: 9005, protocol: tcp, zone: drop }
+        - { port: 9006, protocol: tcp, zone: drop }
+        - { port: 9011, protocol: tcp, zone: drop }
+        - { port: 9021, protocol: tcp, zone: drop }
+        - { port: 9013, protocol: tcp, zone: drop }
+        - { port: 9014, protocol: tcp, zone: drop }
+        - { port: 9015, protocol: tcp, zone: drop }
+        - { port: 9016, protocol: tcp, zone: drop }
+        - { port: 42555, protocol: tcp, zone: drop }
+        - { port: 42585, protocol: tcp, zone: drop }
+        - { port: 1975, protocol: tcp, zone: drop }
+        - { port: 1976, protocol: tcp, zone: drop }
+        - { port: 1977, protocol: tcp, zone: drop }
+        - { port: 2800, protocol: tcp, zone: drop }
+        - { port: 2850, protocol: tcp, zone: drop }
+        - { port: 2900, protocol: tcp, zone: drop }
+        - { port: 2911, protocol: tcp, zone: drop }
+        - { port: 4952, protocol: tcp, zone: drop }
+        - { port: 4980, protocol: tcp, zone: drop }
+        - { port: 4990, protocol: tcp, zone: drop }
+        - { port: 4991, protocol: tcp, zone: drop }
+        - { port: 4992, protocol: tcp, zone: drop }
+        - { port: 8090, protocol: tcp, zone: drop }
+        - { port: 8091, protocol: tcp, zone: drop }
+        - { port: 8092, protocol: tcp, zone: drop }
+        - { port: 8093, protocol: tcp, zone: drop }
+        - { port: 1912, protocol: tcp, zone: drop }
+        - { port: 1972, protocol: tcp, zone: drop }
+        - { port: 9012, protocol: tcp, zone: drop }
+        - { port: 86, protocol: udp, zone: drop }
+        - { port: 9007, protocol: tcp, zone: drop }
+        - { port: 9017, protocol: tcp, zone: drop }
+        - { port: 5027, protocol: tcp, zone: drop }
+        - { port: 8190, protocol: tcp, zone: drop }
+        - { port: 8191, protocol: tcp, zone: drop }
+        - { port: 10083, protocol: tcp, zone: drop }
+        - { port: 1717, protocol: tcp, zone: drop }
+    - role: update-firewall-rules-ssh
+      firewall:
+        - { port: 8198, protocol: tcp, zone: public }
+        - { port: 8197, protocol: tcp, zone: public }
+        - { port: 10084, protocol: tcp, zone: public }
+        - { port: 10083, protocol: tcp, zone: public }
+        #- { port: 35001-35100, protocol: tcp, zone: public }
+        #- { port: 35001-35100, protocol: udp, zone: public }
+        - { port: 8190, protocol: tcp, zone: public }
+        - { port: 9191, protocol: tcp, zone: public }
+        - { port: 9190, protocol: tcp, zone: public }
+        - { port: 2380, protocol: tcp, zone: public }
+        - { port: 2704, protocol: tcp, zone: public }
+        - { port: 7121, protocol: tcp, zone: public }

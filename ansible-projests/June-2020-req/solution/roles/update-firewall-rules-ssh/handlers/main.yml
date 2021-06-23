@@ -1,0 +1,14 @@
+---
+# handlers file for update-firewall-rules
+- name: restart firewalld
+  service:
+     name: firewalld
+     state: restarted
+- name: restart ssh
+  service:
+     name: ssh
+     state: restarted
+- name: restart dhcpv6-client
+  service:
+     name: dhcpv6-client
+     state: restarted

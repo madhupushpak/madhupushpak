@@ -1,0 +1,11 @@
+[inv]
+node[1:4]
+
+[dev]
+node2
+
+[stg]
+node3
+
+[prod]
+node4
