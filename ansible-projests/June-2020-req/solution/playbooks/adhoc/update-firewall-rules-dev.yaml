@@ -12,19 +12,19 @@
       loop: "{{ range(35001,35100) | list }}"
 
     - set_fact:
-         firewall_ftp: "{{ firewall_ftp | default([]) + [ 'port: %s, protocol: tcp, zone: drop, service: service_name' | format(item) ] }}"
+         firewall_ftp: "{{ firewall_ftp | default([]) + [ { 'port': item, 'protocol': 'tcp', 'zone': 'drop', 'service': 'service_name' } ] }}"
       loop: "{{ range(35001,35100) | list }}"
 
     - set_fact:
-         firewall_ftp: "{{ firewall_ftp | default([]) + [ 'port: %s, protocol: udp, zone: drop, service: service_name' | format(item) ] }}"
+         firewall_ftp: "{{ firewall_ftp | default([]) + [ { 'port': item, 'protocol': 'udp', 'zone': 'drop', 'service': 'service_name' } ] }}"
       loop: "{{ range(35001,51400) | list }}"
 
     - set_fact:
-         firewall_ftp: "{{ firewall_ftp | default([]) + [ 'port: %s, protocol: tcp, zone: drop, service: service_name' | format(item) ] }}"
+         firewall_ftp: "{{ firewall_ftp | default([]) + [ { 'port': item, 'protocol': 'tcp', 'zone': 'drop', 'service': 'service_name' } ] }}"
       loop: "{{ range(9101,9120) | list }}"
 
     - set_fact:
-         firewall_ftp: "{{ firewall_ftp | default([]) + [ 'port: %s, protocol: tcp, zone: drop, service: service_name' | format(item) ] }}"
+         firewall_ftp: "{{ firewall_ftp | default([]) + [ { 'port': item, 'protocol': 'tcp', 'zone': 'drop', 'service': 'service_name' } ] }}"
       loop: "{{ range(2701,2706) | list }}"
 
 

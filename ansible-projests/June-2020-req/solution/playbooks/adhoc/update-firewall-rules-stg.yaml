@@ -1,5 +1,5 @@
 - name: Building list of rules which need to be applied from ranges
-  hosts: dev
+  hosts: stg
   tasks:
     - set_fact:
          firewall_ssh: "{{ firewall_ssh | default([]) + [ { 'port': item, 'protocol': 'tcp', 'zone': 'public', 'service': 'service_name' } ] }}"
@@ -10,7 +10,7 @@
       loop: "{{ range(35001,35100) | list }}"
 
 - name: Updating Firewall rules in STG environment
-  hosts: dev
+  hosts: stg
   roles:
     - role: update-firewall-rules-ftp
       firewall:
