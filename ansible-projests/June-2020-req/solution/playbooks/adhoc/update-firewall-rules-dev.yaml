@@ -1,95 +1,122 @@
 ---
 
-- hosts: dev
+- name: Building list of rules which need to be applied from ranges
+  hosts: dev
+  tasks:
+    - set_fact:
+         firewall_ssh: "{{ firewall_ssh | default([]) + [ { 'port': item, 'protocol': 'tcp', 'zone': 'public', 'service': 'service_name' } ] }}"
+      loop: "{{ range(35001,35100) | list }}"
+
+    - set_fact:
+         firewall_ssh: "{{ firewall_ssh | default([]) + [ { 'port': item, 'protocol': 'udp', 'zone': 'public', 'service': 'service_name' } ] }}"
+      loop: "{{ range(35001,35100) | list }}"
+
+    - set_fact:
+         firewall_ftp: "{{ firewall_ftp | default([]) + [ 'port: %s, protocol: tcp, zone: drop, service: service_name' | format(item) ] }}"
+      loop: "{{ range(35001,35100) | list }}"
+
+    - set_fact:
+         firewall_ftp: "{{ firewall_ftp | default([]) + [ 'port: %s, protocol: udp, zone: drop, service: service_name' | format(item) ] }}"
+      loop: "{{ range(35001,51400) | list }}"
+
+    - set_fact:
+         firewall_ftp: "{{ firewall_ftp | default([]) + [ 'port: %s, protocol: tcp, zone: drop, service: service_name' | format(item) ] }}"
+      loop: "{{ range(9101,9120) | list }}"
+
+    - set_fact:
+         firewall_ftp: "{{ firewall_ftp | default([]) + [ 'port: %s, protocol: tcp, zone: drop, service: service_name' | format(item) ] }}"
+      loop: "{{ range(2701,2706) | list }}"
+
+
+- name: Updating Firewall rules in DEV environment
+  hosts: dev
   roles:
     - role: update-firewall-rules-ssh
       firewall:
-         - { port: 10083, protocol: tcp, zone: public }
-         - { port: 8197, protocol: tcp, zone: public }
-         - { port: 8198, protocol: tcp, zone: public }
-         - { port: 10084, protocol: tcp, zone: public }
-        # - { port: 35001-35100, protocol: tcp, zone: public }
-        # - { port: 35001-35100, protocol: udp, zone: public }
-         - { port: 80, protocol: tcp, zone: public }
-         - { port: 8190, protocol: tcp, zone: public }
-         - { port: 2720, protocol: tcp, zone: public }
-         - { port: 2720, protocol: udp, zone: public }
-         - { port: 2701, protocol: tcp, zone: public }
-         - { port: 8195, protocol: tcp, zone: public }
-         - { port: 8196, protocol: tcp, zone: public }
-         - { port: 2704, protocol: tcp, zone: public }
-         - { port: 2703, protocol: tcp, zone: public }
-         - { port: 2702, protocol: tcp, zone: public }
-         - { port: 2705, protocol: tcp, zone: public }
-         - { port: 2722, protocol: tcp, zone: public }
-         - { port: 7121, protocol: tcp, zone: public }
+         - { port: 10990, protocol: tcp, zone: public, service: service_name }
+         - { port: 10083, protocol: tcp, zone: public, service: service_name }
+         - { port: 8197, protocol: tcp, zone: public, service: service_name }
+         - { port: 8198, protocol: tcp, zone: public, service: service_name }
+         - { port: 10084, protocol: tcp, zone: public, service: service_name }
+         - { port: 80, protocol: tcp, zone: public, service: service_name }
+         - { port: 8190, protocol: tcp, zone: public, service: service_name }
+         - { port: 2720, protocol: tcp, zone: public, service: service_name }
+         - { port: 2720, protocol: udp, zone: public, service: service_name }
+         - { port: 2701, protocol: tcp, zone: public, service: service_name }
+         - { port: 8195, protocol: tcp, zone: public, service: service_name }
+         - { port: 8196, protocol: tcp, zone: public, service: service_name }
+         - { port: 2704, protocol: tcp, zone: public, service: service_name }
+         - { port: 2703, protocol: tcp, zone: public, service: service_name }
+         - { port: 2702, protocol: tcp, zone: public, service: service_name }
+         - { port: 2705, protocol: tcp, zone: public, service: service_name }
+         - { port: 2722, protocol: tcp, zone: public, service: service_name }
+         - { port: 7121, protocol: tcp, zone: public, service: service_name }
     - role: update-firewall-rules-ftp
       firewall:
-         - { port: 22, protocol: tcp, zone: drop }
-         - { port: 86, protocol: tcp, zone: drop }
-         - { port: 1971, protocol: tcp, zone: drop }
-         - { port: 2700, protocol: tcp, zone: drop }
-         - { port: 4075, protocol: tcp, zone: drop }
-         - { port: 5021, protocol: tcp, zone: drop }
-         - { port: 5022, protocol: tcp, zone: drop }
-         - { port: 5023, protocol: tcp, zone: drop }
-         - { port: 5024, protocol: tcp, zone: drop }
-         - { port: 5025, protocol: tcp, zone: drop }
-         - { port: 5026, protocol: tcp, zone: drop }
-         - { port: 5080, protocol: tcp, zone: drop }
-         - { port: 9001, protocol: tcp, zone: drop }
-         - { port: 9002, protocol: tcp, zone: drop }
-         - { port: 9003, protocol: tcp, zone: drop }
-         - { port: 9004, protocol: tcp, zone: drop }
-         - { port: 9005, protocol: tcp, zone: drop }
-         - { port: 9006, protocol: tcp, zone: drop }
-         - { port: 9011, protocol: tcp, zone: drop }
-         - { port: 9021, protocol: tcp, zone: drop }
-         - { port: 9013, protocol: tcp, zone: drop }
-         - { port: 9014, protocol: tcp, zone: drop }
-         - { port: 9015, protocol: tcp, zone: drop }
-         - { port: 9016, protocol: tcp, zone: drop }
-         - { port: 42555, protocol: tcp, zone: drop }
-         - { port: 42585, protocol: tcp, zone: drop }
-         - { port: 1975, protocol: tcp, zone: drop }
-         - { port: 1976, protocol: tcp, zone: drop }
-         - { port: 1977, protocol: tcp, zone: drop }
-         - { port: 2800, protocol: tcp, zone: drop }
-         - { port: 2850, protocol: tcp, zone: drop }
-         - { port: 2900, protocol: tcp, zone: drop }
-         - { port: 2911, protocol: tcp, zone: drop }
-         - { port: 4952, protocol: tcp, zone: drop }
-         - { port: 4980, protocol: tcp, zone: drop }
-         - { port: 4990, protocol: tcp, zone: drop }
-         - { port: 4991, protocol: tcp, zone: drop }
-         - { port: 4992, protocol: tcp, zone: drop }
-         - { port: 8090, protocol: tcp, zone: drop }
-         - { port: 8091, protocol: tcp, zone: drop }
-         - { port: 8092, protocol: tcp, zone: drop }
-         - { port: 8093, protocol: tcp, zone: drop }
-         - { port: 9443, protocol: tcp, zone: drop }
-         - { port: 9012, protocol: tcp, zone: drop }
-         - { port: 8006, protocol: tcp, zone: drop }
-         - { port: 8007, protocol: tcp, zone: drop }
-         - { port: 6500, protocol: tcp, zone: drop }
-         - { port: 7501, protocol: tcp, zone: drop }
-         - { port: 7502, protocol: tcp, zone: drop }
-         #- { port: 9101-9120, protocol: tcp, zone: drop }
-         - { port: 86, protocol: udp, zone: drop }
-         - { port: 8901, protocol: tcp, zone: drop }
-         - { port: 8190, protocol: tcp, zone: drop }
-         - { port: 8191, protocol: tcp, zone: drop }
-         - { port: 10083, protocol: tcp, zone: drop }
-         #- { port: 35001-35100, protocol: tcp, zone: drop }
-         #- { port: 35000-51400, protocol: udp, zone: drop }
-         - { port: 2323, protocol: tcp, zone: drop }
-         - { port: 2380, protocol: tcp, zone: drop }
-         - { port: 1717, protocol: tcp, zone: drop }
-         - { port: 1720, protocol: tcp, zone: drop }
-         - { port: 1718, protocol: tcp, zone: drop }
-         - { port: 1719, protocol: tcp, zone: drop }
-         - { port: 8083, protocol: tcp, zone: drop }
-         #- { port: 2701-2706, protocol: tcp, zone: drop }
-         #- { port: 35001-35100, protocol: udp, zone: drop }
-         - { port: 2703, protocol: tcp, zone: drop }
-         - { port: 2722, protocol: tcp, zone: drop }
+         - { port: 22, protocol: tcp, zone: drop, service: service_name }
+         - { port: 86, protocol: tcp, zone: drop, service: service_name }
+         - { port: 1971, protocol: tcp, zone: drop, service: service_name }
+         - { port: 2700, protocol: tcp, zone: drop, service: service_name }
+         - { port: 4075, protocol: tcp, zone: drop, service: service_name }
+         - { port: 5021, protocol: tcp, zone: drop, service: service_name }
+         - { port: 5022, protocol: tcp, zone: drop, service: service_name }
+         - { port: 5023, protocol: tcp, zone: drop, service: service_name }
+         - { port: 5024, protocol: tcp, zone: drop, service: service_name }
+         - { port: 5025, protocol: tcp, zone: drop, service: service_name }
+         - { port: 5026, protocol: tcp, zone: drop, service: service_name }
+         - { port: 5080, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9001, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9002, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9003, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9004, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9005, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9006, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9011, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9021, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9013, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9014, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9015, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9016, protocol: tcp, zone: drop, service: service_name }
+         - { port: 42555, protocol: tcp, zone: drop, service: service_name }
+         - { port: 42585, protocol: tcp, zone: drop, service: service_name }
+         - { port: 1975, protocol: tcp, zone: drop, service: service_name }
+         - { port: 1976, protocol: tcp, zone: drop, service: service_name }
+         - { port: 1977, protocol: tcp, zone: drop, service: service_name }
+         - { port: 2800, protocol: tcp, zone: drop, service: service_name }
+         - { port: 2850, protocol: tcp, zone: drop, service: service_name }
+         - { port: 2900, protocol: tcp, zone: drop, service: service_name }
+         - { port: 2911, protocol: tcp, zone: drop, service: service_name }
+         - { port: 4952, protocol: tcp, zone: drop, service: service_name }
+         - { port: 4980, protocol: tcp, zone: drop, service: service_name }
+         - { port: 4990, protocol: tcp, zone: drop, service: service_name }
+         - { port: 4991, protocol: tcp, zone: drop, service: service_name }
+         - { port: 4992, protocol: tcp, zone: drop, service: service_name }
+         - { port: 8090, protocol: tcp, zone: drop, service: service_name }
+         - { port: 8091, protocol: tcp, zone: drop, service: service_name }
+         - { port: 8092, protocol: tcp, zone: drop, service: service_name }
+         - { port: 8093, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9443, protocol: tcp, zone: drop, service: service_name }
+         - { port: 9012, protocol: tcp, zone: drop, service: service_name }
+         - { port: 8006, protocol: tcp, zone: drop, service: service_name }
+         - { port: 8007, protocol: tcp, zone: drop, service: service_name }
+         - { port: 6500, protocol: tcp, zone: drop, service: service_name }
+         - { port: 7501, protocol: tcp, zone: drop, service: service_name }
+         - { port: 7502, protocol: tcp, zone: drop, service: service_name }
+         - { port: 86, protocol: udp, zone: drop, service: service_name }
+         - { port: 8901, protocol: tcp, zone: drop, service: service_name }
+         - { port: 8190, protocol: tcp, zone: drop, service: service_name }
+         - { port: 8191, protocol: tcp, zone: drop, service: service_name }
+         - { port: 10083, protocol: tcp, zone: drop, service: service_name }
+         - { port: 2323, protocol: tcp, zone: drop, service: service_name }
+         - { port: 2380, protocol: tcp, zone: drop, service: service_name }
+         - { port: 1717, protocol: tcp, zone: drop, service: service_name }
+         - { port: 1720, protocol: tcp, zone: drop, service: service_name }
+         - { port: 1718, protocol: tcp, zone: drop, service: service_name }
+         - { port: 1719, protocol: tcp, zone: drop, service: service_name }
+         - { port: 8083, protocol: tcp, zone: drop, service: service_name }
+         - { port: 2703, protocol: tcp, zone: drop, service: service_name }
+         - { port: 2722, protocol: tcp, zone: drop, service: service_name }
+    - role: update-firewall-rules-ssh
+      firewall: "{{ firewall_ssh }}"
+    - role: update-firewall-rules-ftp
+      firewall: "{{ firewall_ftp  }}"
