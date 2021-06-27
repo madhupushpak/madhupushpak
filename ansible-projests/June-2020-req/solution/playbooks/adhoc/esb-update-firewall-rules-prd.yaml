@@ -1,0 +1,18 @@
+---
+
+- name: Updating Firewall rules in DEV environment
+  hosts: dev
+  roles:
+    - role: update-firewall-rules-esb
+      firewall:
+         - { port: 8117, protocol: tcp, zone: public, service: service_name }
+         - { port: 8004, protocol: tcp, zone: public, service: service_name }
+         - { port: 8101, protocol: tcp, zone: public, service: service_name }
+         - { port: 8000, protocol: tcp, zone: public, service: service_name }
+         - { port: 8100, protocol: tcp, zone: public, service: service_name }
+         - { port: 8001, protocol: tcp, zone: public, service: service_name }
+         - { port: 8161, protocol: tcp, zone: public, service: service_name }
+         - { port: 8010, protocol: tcp, zone: public, service: service_name }
+         - { port: 8107, protocol: tcp, zone: public, service: service_name }
+         - { port: 8082, protocol: tcp, zone: public, service: service_name }
+         - { port: 8989, protocol: tcp, zone: public, service: service_name }
